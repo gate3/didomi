@@ -20,6 +20,9 @@ export class UsersService {
 
   async findOne(id: string): Promise<UsersEntityResponse> {
     const user = await this.usersRepository.getUserById(id);
+    if (!user) {
+      throw new BadRequestException('User not found!');
+    }
     return new UsersEntityResponse({
       ...user,
     });
