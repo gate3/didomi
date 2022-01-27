@@ -3,7 +3,15 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'path';
 
 export default registerAs('databaseConfig', (): TypeOrmModuleOptions => {
-  const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+  const {
+    DB_HOST,
+    DB_PORT,
+    DB_USER,
+    DB_PASSWORD,
+    DB_NAME,
+    RUN_MIGRATIONS = 'false',
+    ENABLE_LOGGING = 'false',
+  } = process.env;
 
   return {
     type: 'postgres',
@@ -13,8 +21,8 @@ export default registerAs('databaseConfig', (): TypeOrmModuleOptions => {
     password: DB_PASSWORD,
     database: DB_NAME,
     entities: [join(__dirname, '..', '**', '*.entity{.ts,.js}')],
-    synchronize: false,
-    logging: true,
+    synchronize: RUN_MIGRATIONS.toLowerCase() === 'true',
+    logging: ENABLE_LOGGING.toLowerCase() === 'true',
     migrations: [
       join(__dirname, '..', 'src', '**', 'migrations/**/*{.ts,.js}'),
     ],
