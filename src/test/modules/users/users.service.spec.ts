@@ -3,21 +3,10 @@ import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import UserEntity from '../../../entities/user.entity';
-import { CreateUserInput } from '../dto/create-user.types';
-import { UsersRepository } from '../users.repository';
-import { UsersService } from '../users.service';
-
-class MockUsersRepository {
-  async findOne(): Promise<void> {}
-
-  async save(): Promise<void> {}
-
-  async getUserById(): Promise<void> {}
-
-  async getUserByEmail(): Promise<void> {}
-
-  async deleteUser(): Promise<void> {}
-}
+import { CreateUserInput } from '../../../modules/users/dto/create-user.types';
+import { UsersRepository } from '../../../modules/users/users.repository';
+import { UsersService } from '../../../modules/users/users.service';
+import { MockUsersRepository } from './mocks';
 
 describe('UsersService', () => {
   let userService: UsersService;

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConsentController } from './consent.controller';
-import { ConsentService } from './consent.service';
+import { ConsentController } from '../../../modules/consent/consent.controller';
+import { ConsentService } from '../../../modules/consent/consent.service';
 
 describe('ConsentController', () => {
   let controller: ConsentController;
