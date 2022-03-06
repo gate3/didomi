@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Transform, Expose } from 'class-transformer';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { ConsentEventsEntity } from '../../../entities/consent-events.entity';
@@ -7,6 +8,7 @@ export class CreateUserInput {
   @IsEmail({
     message: 'A valid email must be provded',
   })
+  @ApiProperty({ example: 'hello@world.com' })
   @IsNotEmpty()
   email: string;
 }

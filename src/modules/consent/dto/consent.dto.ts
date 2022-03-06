@@ -1,9 +1,22 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsString } from 'class-validator';
 import { ConsentEventsEntity } from '../../../entities/consent-events.entity';
 import { ConsentTypes } from '../constants';
 
 abstract class ConsentEvent {
+  @ApiProperty({
+    enum: ConsentTypes,
+    isArray: false,
+    example: `${ConsentTypes.ALL_NOTIFICATIONS} | ${ConsentTypes.EMAIL_NOTIFICATIONS}`,
+  })
   id: ConsentTypes;
+
+  @ApiProperty()
+  @IsString()
   email: string;
+
+  @ApiProperty()
+  @IsBoolean()
   enabled: boolean;
 }
 
