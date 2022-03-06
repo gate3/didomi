@@ -107,39 +107,38 @@ describe('UsersService', () => {
         mockInput.email,
       );
     });
+  });
+  describe('findOne', () => {
+    it('should fetch the correct user', async () => {
+      // arrange
+      const usersRepositoryGetUserByIdSpy = jest
+        .spyOn<UsersRepository, 'getUserById'>(usersRepository, 'getUserById')
+        .mockImplementation(() => Promise.resolve(mockUser));
 
-    describe('findOne', () => {
-      it('should fetch the correct user', async () => {
-        // arrange
-        const usersRepositoryGetUserByIdSpy = jest
-          .spyOn<UsersRepository, 'getUserById'>(usersRepository, 'getUserById')
-          .mockImplementation(() => Promise.resolve(mockUser));
+      // act
+      const result = await userService.findOne(mockUser.id);
 
-        // act
-        const result = await userService.findOne(mockUser.id);
+      // assert
+      expect(result).toEqual(mockUser);
 
-        // assert
-        expect(result).toEqual(mockUser);
+      expect(usersRepositoryGetUserByIdSpy).toHaveBeenCalledTimes(1);
+      expect(usersRepositoryGetUserByIdSpy).toHaveBeenCalledWith(mockUser.id);
+    });
 
-        expect(usersRepositoryGetUserByIdSpy).toHaveBeenCalledTimes(1);
-        expect(usersRepositoryGetUserByIdSpy).toHaveBeenCalledWith(mockUser.id);
-      });
+    it('should throw an error if the user with the passed id is not found', async () => {
+      // arrange
+      const usersRepositoryGetUserByIdSpy = jest
+        .spyOn<UsersRepository, 'getUserById'>(usersRepository, 'getUserById')
+        .mockImplementation(() => null);
 
-      it('should throw an error if the user with the passed id is not found', async () => {
-        // arrange
-        const usersRepositoryGetUserByIdSpy = jest
-          .spyOn<UsersRepository, 'getUserById'>(usersRepository, 'getUserById')
-          .mockImplementation(() => null);
+      // act
+      await expect(userService.findOne(mockUser.id)).rejects.toThrow(
+        BadRequestException,
+      );
 
-        // act
-        await expect(userService.findOne(mockUser.id)).rejects.toThrow(
-          BadRequestException,
-        );
-
-        // assert
-        expect(usersRepositoryGetUserByIdSpy).toHaveBeenCalledTimes(1);
-        expect(usersRepositoryGetUserByIdSpy).toHaveBeenCalledWith(mockUser.id);
-      });
+      // assert
+      expect(usersRepositoryGetUserByIdSpy).toHaveBeenCalledTimes(1);
+      expect(usersRepositoryGetUserByIdSpy).toHaveBeenCalledWith(mockUser.id);
     });
   });
 });
