@@ -21,10 +21,13 @@ export class MockUserService {
 
 // TODO - I would use a library here that can be used to generate random user data
 // or a factory method to generate random user data
-export const MockUserEntity: UserEntity = {
+export const MockUserEntity = (
+  userEntity?: Partial<UserEntity>,
+): UserEntity => ({
   id: 'someId',
   email: 'test@email.com',
   createdAt: new Date(),
   updatedAt: new Date(),
   consentEvents: [],
-};
+  ...userEntity,
+});

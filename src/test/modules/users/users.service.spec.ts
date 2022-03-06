@@ -6,7 +6,7 @@ import UserEntity from '../../../entities/user.entity';
 import { CreateUserInput } from '../../../modules/users/dto/create-user.types';
 import { UsersRepository } from '../../../modules/users/users.repository';
 import { UsersService } from '../../../modules/users/users.service';
-import { MockUsersRepository } from './mocks';
+import { MockUserEntity, MockUsersRepository } from './mocks';
 
 describe('UsersService', () => {
   let userService: UsersService;
@@ -15,13 +15,7 @@ describe('UsersService', () => {
   let mockUser: UserEntity;
 
   beforeAll(() => {
-    mockUser = {
-      id: 'someId',
-      email: 'test@email.com',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      consentEvents: [],
-    };
+    mockUser = MockUserEntity();
 
     mockInput = {
       email: mockUser.email,
@@ -54,11 +48,9 @@ describe('UsersService', () => {
         .spyOn<UsersRepository, 'save'>(usersRepository, 'save')
         .mockImplementation(() => null);
 
-      // act
-
-      // assert
+      // act & assert
       await expect(userService.create(mockInput)).rejects.toThrow(
-        BadRequestException,
+        new BadRequestException('User already exists!'),
       );
 
       expect(usersRepositoryFindOneSpy).toHaveBeenCalledTimes(1);

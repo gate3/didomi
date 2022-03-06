@@ -21,13 +21,13 @@ export class UsersHttpExceptionFilter implements ExceptionFilter {
       request.method === 'POST' &&
       exception.getStatus() === HttpStatus.BAD_REQUEST
     ) {
-      response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+      return response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
         error: 'Invalid email address provided',
         message: exception.message,
         statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       });
     }
 
-    response.status(status).json(exception.getResponse());
+    return response.status(status).json(exception.getResponse());
   }
 }

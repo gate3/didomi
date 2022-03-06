@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import ConsentEventsRepository from './consent-events.repository';
-import { CreateConsentEventDto } from './dto/consent.dto';
+import { ConsentEventResponse, CreateConsentEventDto } from './dto/consent.dto';
 import { UsersRepository } from '../users/users.repository';
 
 @Injectable()
@@ -42,14 +42,12 @@ export class ConsentService {
       );
     }
 
-    if (!user) {
-      throw new BadRequestException('The provided user does not exist!');
-    }
-
-    return this.consentEventsRepository.createConsentEvent(
+    const consentEvent = await this.consentEventsRepository.createConsentEvent(
       consentName,
       user,
       enabled,
     );
+
+    return new ConsentEventResponse(consentEvent);
   }
 }
