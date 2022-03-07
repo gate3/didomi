@@ -60,7 +60,6 @@ describe('UsersController', () => {
       const mockUserId = 'someId';
 
       const response = await controller.findOne(mockUserId);
-      console.log({ response });
       expect(response).toEqual(mockUserResponse);
 
       expect(usersServiceSpy).toHaveBeenCalledTimes(1);
